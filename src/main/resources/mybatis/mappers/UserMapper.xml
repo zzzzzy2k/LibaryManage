@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zzzzzy.dao.UserMapper">
+
+    <select id="queryByName" resultType="user">
+        select * from my_lib_mgr.user where username = #{username};
+    </select>
+
+    <select id="getUserPower" resultType="java.util.HashMap" parameterType="String">
+        select my_lib_mgr.user.userId, username,
+            role.roleId, roleName,
+            permissions.perId, permissionName
+        from my_lib_mgr.user ,
+            my_lib_mgr.role,
+            my_lib_mgr.permissions,
+            my_lib_mgr.user_role,
+            my_lib_mgr.role_per
+        where my_lib_mgr.user.username = #{username}
+            and my_lib_mgr.user.userId = user_role.userId
+            and my_lib_mgr.role.roleId = user_role.roleId
+            and my_lib_mgr.role.roleId = role_per.roleId
+            and my_lib_mgr.permissions.perId = role_per.perId;
+    </select>
+
+</mapper>

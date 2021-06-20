@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--suppress ThymeleafVariablesResolveInspection-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+    <!-- 必须的 meta 标签 -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- 引入 Bootstrap -->
+    <!--BootStrap美化界面-->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <title>登录页面</title>
+</head>
+<body>
+
+
+<div class="container">
+
+    <h1>登录界面</h1>
+
+    <hr>
+
+    <form method="post" th:action="@{/login}" style="width: 20%">
+        <p class="form-group" style="color: red;" th:if="${msg}!=null" th:text="${msg}"></p>
+        <div class="form-group">
+            <label>用户名</label>
+            <input type="text" name="username" placeholder="username" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>密码</label>
+            <input type="password" name="password" placeholder="password" class="form-control">
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="rememberMe" value=1> Remember me
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary">登录</button>
+
+    </form>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-NU/T4JKmgovMiPaK2GP9Y+TVBQxiaiYFJB6igFtfExinKlzVruIK6XtKqxCGXwCG"
+        crossorigin="anonymous"></script>
+</body>
+</html>

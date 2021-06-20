@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!--suppress ThymeleafVariablesResolveInspection-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+    <!-- 必须的 meta 标签 -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- 引入 Bootstrap -->
+    <!--BootStrap美化界面-->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .table > tbody > tr > td, .table > tbody > tr > th,
+        .table > tfoot > tr > td, .table > tfoot > tr > th,
+        .table > thead > tr > td, .table > thead > tr > th {
+            vertical-align: middle;
+            text-align: center;
+        }
+    </style>
+
+    <title>图书管理系统</title>
+</head>
+<body>
+
+<div class="container">
+
+    <div>
+        <h1>图书管理系统</h1>
+        <a href="/logout">退出登录</a>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-4" shiro:hasRole="admin">
+            <a class="btn btn-primary" href="/book/toAdd">
+                <span>新增书籍</span>
+            </a>
+        </div>
+
+        <div class="col-md-4 col-md-offset-4">
+            <form method="post" action="/book/list">
+                <span>查询书籍</span>
+                <input type="text" name="name" th:value="${param.name}" placeholder="请输入要查询的书籍名称">
+                <input type="submit" value="查询">
+            </form>
+        </div>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th style="text-align: center; width: 25%" scope="col">书籍编号</th>
+            <th style="text-align: center; width: 25%" scope="col">书名</th>
+            <th style="text-align: center; width: 25%" scope="col">价格</th>
+            <th shiro:hasRole="admin" style="text-align: center; width: 25%" scope="col" colspan="2">操作</th>
+        </tr>
+        </thead>
+        <tbody style="vertical-align: middle">
+        <tr th:each="book : ${pageInfo.list}">
+            <td style="width: 25%" th:text="${book.id}"></td>
+            <td style="width: 25%" th:text="${book.name}"></td>
+            <td style="width: 25%" th:text="${book.price}"></td>
+            <td style="width: 25%" shiro:hasRole="admin">
+                <a th:href="@{/book/toUpdate(id=${book.id})}" class="btn btn-info">修改</a>
+                <a th:href="@{'/book/delete/'+${book.getId()}}" class="btn btn-danger">删除</a>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+    <br>
+    <div align="center" name="name">
+        <p>当前为第 <span th:text="${pageInfo.pageNum}"></span> 页,总 <span th:text="${pageInfo.pages}"></span> 页,共 <span
+                th:text="${pageInfo.total}"></span> 条记录</p>
+        <ul class="pager">
+            <li>
+                <a th:href="@{${#request.getRequestURL()}(name=${param.name})}">首页</a>
+            </li>
+            <li>
+                <a th:if="${pageInfo.hasPreviousPage}"
+                   th:href="@{${#request.getRequestURL()}(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1, name=${param.name})}">上一页</a>
+            </li>
+            <li>
+                <a th:if="${pageInfo.hasNextPage}"
+                   th:href="@{${#request.getRequestURL()}(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages}, name=${param.name})}">下一页</a>
+            </li>
+            <li>
+                <a th:href="@{${#request.getRequestURL()}(pageNum=${pageInfo.pages}, name=${param.name})}">尾页</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!--<div th:replace="/pager::common_pager">分页条</div>-->
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-NU/T4JKmgovMiPaK2GP9Y+TVBQxiaiYFJB6igFtfExinKlzVruIK6XtKqxCGXwCG"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
